@@ -10,8 +10,13 @@ jobs:
         uses: actions/checkout@v4
       # Install npm dependencies, cache them correctly
       # and run all Cypress tests
-      - name: Cypress run
-        uses: cypress-io/github-action@v6
+      - name: Install Node.js and npm
+        uses: actions/setup-node@v3
         with:
-          build: npm run build
-          start: npm start
+          node-version: '18'
+
+      - name: Install project dependencies
+        run: npm install
+
+      - name: Run Cypress Cucumber tests
+        run: npx cypress run
