@@ -39,7 +39,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libx11-xcb-dev libgbm-dev libasound2
           sudo apt-get install -y mesa-utils
-          
+
       - name: Install dependencies
         run: npm install
 
@@ -47,9 +47,10 @@ jobs:
         run: npx cypress install
 
       - name: Run Cypress tests
-        run: npx cypress run
+        run: npx cypress run --browser electron -- --disable-gpu --enable-unsafe-webgl --disable-software-rasterizer
         env:
           CI: true
+          DEBUG: cypress:*
 
       - name: Upload Cypress report artifacts
         if: always()
@@ -57,3 +58,10 @@ jobs:
         with:
           name: cypress-reports
           path: cypress/reports
+
+      - name: Upload Cypress Videos
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: cypress-videos
+          path: cypress/videos
