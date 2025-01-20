@@ -9,7 +9,7 @@ class homePage {
     createNewRepository() {
 
 
-        cy.get('[data-target="loading-context.details"] > .Details > .js-repos-container > .hide-sm > .Button--primary').click()
+        cy.get('[data-target="loading-context.details"] > .Details > .js-repos-container > .hide-sm > .Button--primary', {timeout:7000}).should('be.visible').click()
     
 
         cy.url()
