@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 jobs:
   cypress-run:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-20.04
 
     steps:
       - name: Check out repository
@@ -32,22 +32,12 @@ jobs:
           path: ~/.cache/Cypress
           key: cypress-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
           restore-keys: |
-            cypress-${{ runner.os }}-
+            cypress-${{ runner.os }}
 
-      - name: Install Cypress dependencies
+      - name: Install required system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y \
-          libgtk2.0-0 \
-          libgtk-3-0 \
-          libnotify-dev \
-          libgconf-2-4 \
-          libnss3 \
-          libxss1 \
-          libasound2 \
-          libxtst6 \
-          xauth \
-          xvfb
+          sudo apt-get install -y libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 liboss4-salsa-asound2
 
       - name: Start Xvfb
         run: |
