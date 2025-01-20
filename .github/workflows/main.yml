@@ -13,7 +13,7 @@ jobs:
         env:
           CREDENTIALS: ${{ secrets.CYPRESS_ENV }}
         run: echo $CREDENTIALS > cypress.env.json
-        
+
       - name: Install Node.js and npm
         uses: actions/setup-node@v3
         with:
@@ -23,4 +23,4 @@ jobs:
         run: npm install
 
       - name: Run Cypress Cucumber tests
-        run: npx cypress run
+        run: npx cypress run --browser chrome --headless
