@@ -34,15 +34,15 @@ jobs:
           restore-keys: |
             cypress-${{ runner.os }}
 
-      - name: Install required system dependencies
+      - name: Install required dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 liboss4-salsa-asound2
-
+          sudo apt-get install -y libasound2 libasound2-dev libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libnss3 libxss1 libgconf-2-4
+      
       - name: Start Xvfb
         run: |
-          Xvfb :99 -screen 0 1920x1080x24 &
           export DISPLAY=:99
+          Xvfb :99 -screen 0 1920x1080x24 -ac &
 
       - name: Install dependencies
         run: npm install
@@ -51,7 +51,7 @@ jobs:
         run: npm install cypress@13.2.0
 
       - name: Run Cypress tests
-        run: npx cypress run --browser electron
+        run: npx cypress run --browser electron --headless --no-sandbox
         env:
           CI: true
           DEBUG: cypress:*
