@@ -1,2 +1,2 @@
-# cypress-page-objects-cucumber
-Project with cypress - page objects- cucumber
+# cypress-pageObjects-cucumber
+Cypress with PageObjects and Cucumber

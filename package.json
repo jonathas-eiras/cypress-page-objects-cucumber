@@ -1,0 +1,21 @@
+{
+  "name": "cypress-po-cucumber",
+  "version": "1.0.0",
+  "main": "cypress.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "cypress-cucumber-preprocessor": {
+    "nonGlobalStepDefinitions": true,
+    "stepDefinitions": "cypress/e2e/step_definitions"
+  },
+  "devDependencies": {
+    "cypress": "^14.0.0",
+    "cypress-cucumber-preprocessor": "^4.3.1",
+    "@faker-js/faker": "^9.3.0"
+  }
+}

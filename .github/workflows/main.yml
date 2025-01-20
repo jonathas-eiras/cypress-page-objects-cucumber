@@ -1,0 +1,53 @@
+name: Cypress Tests
+
+on: 
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+jobs:
+  cypress-run:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+
+      - name: secret
+        env:
+          CREDENTIALS: ${{ secrets.CYPRESS_ENV }}
+        run: echo $CREDENTIALS > cypress.env.json
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+
+      - name: Cache Cypress binary
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/Cypress
+          key: cypress-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            cypress-${{ runner.os }}-
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Install Cypress binary
+        run: npx cypress install
+
+      - name: Run Cypress tests
+        run: npx cypress run
+        env:
+          CI: true
+
+      - name: Upload Cypress report artifacts
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: cypress-reports
+          path: cypress/reports
