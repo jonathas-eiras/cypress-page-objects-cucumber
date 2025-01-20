@@ -51,7 +51,7 @@ jobs:
         run: npm install cypress@13.2.0
 
       - name: Run Cypress tests
-        run: npx cypress run --browser electron --headless --no-sandbox
+        run: npx cypress run --browser chrome --headless
         env:
           CI: true
           DEBUG: cypress:*
