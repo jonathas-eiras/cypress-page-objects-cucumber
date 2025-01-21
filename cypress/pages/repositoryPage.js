@@ -3,24 +3,24 @@ import { faker } from '@faker-js/faker'
 class repositoryPage {
 
     elements = {
-        repositoryName : ('[id=":r5:"]'),
-        repositoryDescription: ('[id=":ra:"]'),
-        addReadme: ('[id=":ri:"]'),
-        btnCreateRepository: ('.jLvIcQ > .Box-sc-g0xbh4-0 > .prc-Button-Label-pTQ3x')
+        repositoryName: () => cy.get('[id=":r5:"]'),
+        repositoryDescription: () => cy.get('[id=":ra:"]'),
+        addReadme: () => cy.get('[id=":ri:"]'),
+        btnCreateRepository: () => cy.get('.jLvIcQ'),
     }
 
-    repositoryNameFake = faker.number.int({min:1000, max:9999})
+    repositoryNameFake = faker.number.int({ min: 1000, max: 9999 })
 
-    createRepository (){
-        cy.get(this.elements.repositoryName).type(this.repositoryNameFake)
-        cy.get(this.elements.repositoryDescription).type(faker.lorem.words())
-        cy.get(this.elements.addReadme).check().should('be.checked')
-        cy.get(this.elements.addReadme).click()
+    createRepository() {
+        this.elements.repositoryName().should('be.visible').type(this.repositoryNameFake)
+        this.elements.repositoryDescription().type(faker.lorem.words())
+        this.elements.addReadme().check().should('be.checked')
+        this.elements.addReadme().click()
 
-        cy.get(this.elements.btnCreateRepository).click()
+        this.elements.btnCreateRepository().click()
     }
 
-    validateCreatedRepository (){
+    validateCreatedRepository() {
         cy.url().should('be.equal', `https://github.com/jhon-eiras/${this.repositoryNameFake}`)
     }
 
