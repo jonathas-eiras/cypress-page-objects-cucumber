@@ -1,4 +1,6 @@
+
 name: Cypress Tests with Cucumber and Allure
+
 
 on:
   push:
