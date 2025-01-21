@@ -9,10 +9,10 @@ Given("I have a successful Login", () => {
 When("I want to create new repository", () => {
     HomePage.createNewRepository()
 
-    //RepositoryPage.createRepository()
+    RepositoryPage.createRepository()
 
 })
 
 Then("I have a new repository", () => {
-   // RepositoryPage.validateCreatedRepository()
+    RepositoryPage.validateCreatedRepository()
 })
