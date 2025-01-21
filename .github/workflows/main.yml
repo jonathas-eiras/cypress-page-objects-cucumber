@@ -1,4 +1,4 @@
-name: Cypress Cucumber Tests
+nname: Cypress Cucumber Tests
 
 on:
   push:
@@ -12,53 +12,21 @@ jobs:
   cypress-tests:
     runs-on: ubuntu-latest
 
-    services:
-      docker:
-        image: your-docker-image:latest # Replace with your Docker image
-        options: >-
-          --entrypoint='' # Override entrypoint if necessary
-        ports:
-          - 3000:3000 # Replace with your app's exposed port
-        env:
-          NODE_ENV: test # Set environment variables for the app
-
     steps:
-      # Checkout the code
+      # Log in to Docker if required
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      # Checkout code
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Set up Node.js
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '16' # Use the Node.js version for your project
-
-      # Install dependencies
-      - name: Install dependencies
-        run: npm install
-
-      # Build application (if needed)
-      - name: Build application
-        run: npm run build # Adjust based on your application
-
-      # Start application in Docker
-      - name: Start application in Docker
-        run: |
-          docker-compose up -d
-        env:
-          NODE_ENV: test
-
-      # Wait for the application to be ready
-      - name: Wait for application to start
-        run: |
-          for i in {1..30}; do
-            if curl -s http://localhost:3000; then
-              echo "Application is ready"
-              break
-            fi
-            echo "Waiting for application..."
-            sleep 5
-          done
+      # Build Docker image and start services
+      - name: Build and start Docker services
+        run: docker-compose up -d --build
 
       # Run Cypress tests
       - name: Run Cypress tests
