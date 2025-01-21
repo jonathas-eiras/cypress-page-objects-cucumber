@@ -47,5 +47,5 @@ jobs:
         if: always()
         with:
           name: Cypress
-          path: cypress/results/*.json # Adjust based on your results format
+          path: cypress/results/*.json 
           reporter: mochawesome # Adjust based on your reporter
