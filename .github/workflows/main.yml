@@ -1,4 +1,4 @@
-nname: Cypress Cucumber Tests
+name: Cypress Cucumber Tests
 
 on:
   push:
