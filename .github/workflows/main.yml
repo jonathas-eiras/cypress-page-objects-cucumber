@@ -1,20 +1,85 @@
-name: Cypress Tests
+name: Cypress Cucumber Tests
 
-on: [push]
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  cypress-run:
+  cypress-tests:
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-    
-      - name: Cypress run
-        uses: cypress-io/github-action@v4.2.0 # use the explicit version number
-        with:
-          command: npx cypress run
-    
-      - name: secret
+
+    services:
+      docker:
+        image: your-docker-image:latest # Replace with your Docker image
+        options: --entrypoint='' # Override entrypoint if necessary
+        ports:
+          - 3000:3000 # Replace with your app's exposed port
         env:
-          CREDENTIALS: ${{ secrets.CYPRESS_ENV }}
-        run: echo $CREDENTIALS > cypress.env.json
+          NODE_ENV: test # Set environment variables for the app
+        volumes:
+          - /var/run/docker.sock:/var/run/docker.sock # If Docker-in-Docker is needed
+        commands:
+          - docker-compose up -d # If using Docker Compose
+
+    steps:
+      # Checkout the code
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16' # Use the Node.js version for your project
+
+      # Install dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # Build application (if needed)
+      - name: Build application
+        run: npm run build # Adjust based on your application
+
+      # Start application in Docker
+      - name: Start application
+        run: docker-compose up -d
+        env:
+          NODE_ENV: test
+
+      # Wait for the application to be ready
+      - name: Wait for application to start
+        run: |
+          for i in {1..30}; do
+            if curl -s http://localhost:3000; then
+              echo "Application is ready"
+              break
+            fi
+            echo "Waiting for application..."
+            sleep 5
+          done
+
+      # Run Cypress tests
+      - name: Run Cypress tests
+        run: npx cypress run
+        env:
+          CYPRESS_baseUrl: http://localhost:3000
+
+      # Archive test results
+      - name: Archive test results
+        uses: actions/upload-artifact@v3
+        with:
+          name: cypress-results
+          path: cypress/results
+
+      # Publish test results
+      - name: Publish test results
+        uses: dorny/test-reporter@v1
+        if: always()
+        with:
+          name: Cypress
+          path: cypress/results/*.json # Adjust based on your results format
+          reporter: mochawesome # Adjust based on your reporter
