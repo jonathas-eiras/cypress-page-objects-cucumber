@@ -17,6 +17,11 @@ module.exports = defineConfig({
 
 
   },
-  video: true
+  video: true,
+
+  retries: {
+    runMode: 2,
+    openMode: 0,
+  }
 
 })
