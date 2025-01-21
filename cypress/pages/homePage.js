@@ -3,7 +3,7 @@ class homePage {
 
     elements = {
         btnNewRepository: () => cy.get('[data-target="loading-context.details"] > .Details > .js-repos-container > .hide-sm > .Button--primary'),
-        btnNew: () => cy.get('body > div.logged-in.env-production.page-responsive.full-width > div.application-main > div > div > aside > div > div > loading-context > div > div.Details.js-repos-container.mt-5 > div > div.hide-sm.hide-md.mb-1.d-flex.flex-justify-between.flex-items-center > a > span')
+        btnNew: () => cy.get('body > div.logged-in.env-production.page-responsive.full-width > div.application-main > div > div > aside > div > div > loading-context > div > div.Details.js-repos-container.mt-5 > div > div.hide-sm.hide-md.mb-1.d-flex.flex-justify-between.flex-items-center > a > span', { timeout: 10000 })
     }
     validateHomePage() {
         cy.visit(Cypress.config("baseUrl"))
@@ -11,6 +11,7 @@ class homePage {
     }
 
     createNewRepository() {
+
 
 
         this.elements.btnNew().should('be.visible').click()
