@@ -15,15 +15,12 @@ jobs:
     services:
       docker:
         image: your-docker-image:latest # Replace with your Docker image
-        options: --entrypoint='' # Override entrypoint if necessary
+        options: >-
+          --entrypoint='' # Override entrypoint if necessary
         ports:
           - 3000:3000 # Replace with your app's exposed port
         env:
           NODE_ENV: test # Set environment variables for the app
-        volumes:
-          - /var/run/docker.sock:/var/run/docker.sock # If Docker-in-Docker is needed
-        commands:
-          - docker-compose up -d # If using Docker Compose
 
     steps:
       # Checkout the code
@@ -45,8 +42,9 @@ jobs:
         run: npm run build # Adjust based on your application
 
       # Start application in Docker
-      - name: Start application
-        run: docker-compose up -d
+      - name: Start application in Docker
+        run: |
+          docker-compose up -d
         env:
           NODE_ENV: test
 
