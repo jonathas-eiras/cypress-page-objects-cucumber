@@ -7,7 +7,7 @@ Given("I have a successful Login", () => {
 })
 
 When("I want to create new repository", () => {
-    //HomePage.createNewRepository()
+    HomePage.createNewRepository()
 
     //RepositoryPage.createRepository()
 
